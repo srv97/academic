@@ -7,6 +7,7 @@ import com.example.academic.table_out;
 import com.example.academic.utils.SessionUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.ArrayList;
@@ -21,13 +22,13 @@ public class StudentsDaoImpl implements StudentsDao {
         try {
             Query query = session.createQuery("from Students where email=:email");
             query.setParameter("email", student.getEmail());
-            for( final Object fetch : query.list()) {
+            for (final Object fetch : query.list()) {
                 return (Students) fetch;
             }
         } catch (HibernateException exception) {
             System.out.print(exception.getLocalizedMessage());
             return null;
-        }finally {
+        } finally {
             session.close();
         }
         return null;
@@ -35,65 +36,71 @@ public class StudentsDaoImpl implements StudentsDao {
 
     @Override
     public List<Student_Payment> getPayment(Students student) {
-        Session session = SessionUtil.getSession();
-        try {
-            Student_Payment obj;
-            System.out.println("inside daoimpl get all payments");
-            List<Student_Payment> pay_list = new ArrayList<>();
-            Query query = session.createQuery("select s.id,p.amount,p.description,p.payment_date,p.bill.id from Students s INNER JOIN Student_Payment p ON s.id=p.student.id and s.id=:student_id");
-            query.setParameter("student_id", student.getId());
-            for( final Object fetch : query.list()) {
-               // obj =
+        List<Student_Payment> student_payments = new ArrayList<>();
+        try (Session session = SessionUtil.getSession()) {
+            Query query = session.createQuery("from Students where id=:id");
+            query.setParameter("id", student.getId());
+            for (final Object fetch : query.list()) {
                 System.out.println("inside");
-                pay_list.add((Student_Payment) fetch);
+                for (final Object payment : ((Students) fetch).getPayments()) {
+                    student_payments.add(((Student_Payment) payment));
+                }
+                return student_payments;
             }
-            return pay_list;
         } catch (HibernateException exception) {
             System.out.print(exception.getLocalizedMessage());
-            return null;
-        }finally {
-            session.close();
+            return student_payments;
         }
+        return student_payments;
     }
 
     @Override
-    public List<table_out> gettotalPayment(Students student) {
-        Session session = SessionUtil.getSession();
-        try {
+    public List<table_out> getTotalPayment(Students student) {
+        try (Session session = SessionUtil.getSession()) {
             List<table_out> pay = new ArrayList<>();
-            Query query = session.createQuery("select b.description, sum(s.amount) from Student_Payment s,Bills b where s.student_id=:student_id and b.id=s.bill_id group by b.id");
+            Query query = session.createQuery("select b.description, sum(s.amount) from Student_Payment s,Bills b where s.student.id=:student_id and b.id=s.bill.id group by b.id");
             query.setParameter("student_id", student.getId());
-            for (final Object fetch : query.list()) {
-                pay.add((table_out) fetch);
+            List rows = query.list();
+            for (Object o : rows) {
+                Object[] row = (Object[]) o;
+                table_out table_out = new table_out((String) row[0], ((Double) row[1]).floatValue());
+                pay.add(table_out);
             }
             return pay;
         } catch (HibernateException exception) {
             System.out.print(exception.getLocalizedMessage());
             return null;
-        } finally {
-            session.close();
         }
     }
-        @Override
-        public List<table_out> getDueBill(Students student){
-            Session session = SessionUtil.getSession();
-            try {
-                table_out obj;
-                List<table_out> pay = new ArrayList<>();
-                Query query = session.createQuery("select b.description, b.amount-sum(s.amount) from Student_Payment s,Bills b where s.student_id=:student_id and b.id=s.bill_id group by b.id");
-                query.setParameter("student_id", student.getId());
-                for (final Object fetch : query.list()) {
-                    obj = (table_out) fetch;
-                    if(obj.getAmount()>0)
-                    pay.add((table_out) fetch);
-                }
-                return pay;
-            } catch (HibernateException exception) {
-                System.out.print(exception.getLocalizedMessage());
-                return null;
-            } finally {
-                session.close();
+
+    @Override
+    public List<table_out> getDueBill(Students student) {
+        try (Session session = SessionUtil.getSession()) {
+            List<table_out> pay = new ArrayList<>();
+            Query query = session.createQuery("select b.description, b.amount-sum(s.amount) from Student_Payment s,Bills b where s.student.id=:student_id and b.id=s.bill.id group by b.id");
+            query.setParameter("student_id", student.getId());
+            List rows = query.list();
+            for (Object o : rows) {
+                Object[] row = (Object[]) o;
+                table_out table_out = new table_out((String) row[0], ((Double) row[1]).floatValue());
+                pay.add(table_out);
             }
+            return pay;
+        } catch (HibernateException exception) {
+            System.out.print(exception.getLocalizedMessage());
+            return null;
         }
+    }
+
+    @Override
+    public void registerStudent(Students student) {
+        try (Session session = SessionUtil.getSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.save(student);
+            transaction.commit();
+        } catch (HibernateException exception) {
+            System.out.print(exception.getLocalizedMessage());
+        }
+    }
 }
 

@@ -10,6 +10,8 @@ public interface StudentsDao {
 
    Students emailVerify(Students student);
    List<Student_Payment> getPayment(Students student);
-   List<table_out> gettotalPayment(Students student);
+   List<table_out> getTotalPayment(Students student);
    List<table_out> getDueBill(Students student);
+
+   void registerStudent(Students student);
 }

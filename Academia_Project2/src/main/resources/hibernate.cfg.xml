@@ -6,15 +6,15 @@
     <session-factory>
         <property name="connection.url">jdbc:mysql://localhost:3306/view_bill?createDatabaseIfNotExist=true</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.username">srv</property>
-        <property name="connection.password">password</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">1677</property>
 
         <!-- DB schema will be updated if needed -->
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="show_sql">true</property>
-        <mapping class="com.example.academic.bean.Students"></mapping>
-        <mapping class="com.example.academic.bean.Bills"></mapping>
-        <mapping class="com.example.academic.bean.Student_Payment"></mapping>
+        <mapping class="com.example.academic.bean.Students"/>
+        <mapping class="com.example.academic.bean.Bills"/>
+        <mapping class="com.example.academic.bean.Student_Payment"/>
     </session-factory>
 
 </hibernate-configuration>

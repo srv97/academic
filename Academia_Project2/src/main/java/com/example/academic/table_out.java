@@ -1,5 +1,7 @@
 package com.example.academic;
 
+import com.example.academic.bean.Bills;
+
 public class table_out {
     private String description;
     private float amount;

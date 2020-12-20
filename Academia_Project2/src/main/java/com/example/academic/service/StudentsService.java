@@ -15,7 +15,7 @@ public class StudentsService {
         return studentDao.emailVerify(student);
     }
     public List<Student_Payment> getStuPayment(Students student) { return studentDao.getPayment(student);}
-    public List<table_out> sumPayment(Students student) { return studentDao.gettotalPayment(student);}
+    public List<table_out> sumPayment(Students student) { return studentDao.getTotalPayment(student);}
     public List<table_out> duePayment(Students student) { return studentDao.getDueBill(student);}
 
 }
