@@ -1,5 +1,6 @@
 package com.example.academic.bean;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.util.Date;
 
@@ -49,6 +50,7 @@ public class Student_Payment {
         this.student = student;
     }
 
+    @JsonbTransient
     public Bills getBill() {
         return bill;
     }
