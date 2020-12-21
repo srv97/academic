@@ -86,9 +86,9 @@ public class StudentsDaoImpl implements StudentsDao {
                 pay.add(table_out);
             }
 
-           for (table_out table_out: pay) {
-                System.out.println(table_out.getDescription()+"  totalpay   "+table_out.getAmount()+"     "+table_out.getDeadline());
-          }
+        //   for (table_out table_out: pay) {
+        //        System.out.println(table_out.getDescription()+"  totalpay   "+table_out.getAmount()+"     "+table_out.getDeadline());
+       //   }
 
             return pay;
         } catch (HibernateException exception) {

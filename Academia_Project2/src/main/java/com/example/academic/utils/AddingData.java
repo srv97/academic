@@ -58,6 +58,10 @@ public class AddingData {
         studentsDao = new StudentsDaoImpl();
         studentsDao.registerStudent(student3);
 
+        Students student4 = new Students("Garib", "Das", "garib@iiitb.org", "MT2020000", null, bills);
+        studentsDao = new StudentsDaoImpl();
+        studentsDao.registerStudent(student4);
+
 
         Student_Payment student_payment0 = new Student_Payment(student1, "Paying Security Fee", 1000.00F,early_pay, bill5);
         Student_Payment student_payment1 = new Student_Payment(student1, "Paying Tuition Fee 1", 35000.00F,current, bill2);
@@ -132,5 +136,19 @@ public class AddingData {
             System.out.println("Due payments    "+table_out.getDescription()+"     "+table_out.getAmount()+"       "+table_out.getDeadline());
         }
 
+        System.out.println("\n\nAll payments by student 4--------------------------");
+        student_payments = studentsDao.getPayment(student4);
+        for(Student_Payment student_payment: student_payments){
+            System.out.println("All payments  "+student_payment.getDescription()+"---"+student_payment.getAmount());
+        }
+        table_outs = studentsDao.getTotalPayment(student4);
+        for (table_out table_out: table_outs) {
+            System.out.println("Total payments    "+table_out.getDescription()+"     "+table_out.getAmount()+"       "+table_out.getDeadline());
+        }
+
+        table_outs = studentsDao.getDueBill(student4);
+        for (table_out table_out: table_outs) {
+            System.out.println("Due payments    "+table_out.getDescription()+"     "+table_out.getAmount()+"       "+table_out.getDeadline());
+        }
     }
 }

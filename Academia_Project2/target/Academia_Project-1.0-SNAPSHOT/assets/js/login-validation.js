@@ -24,7 +24,7 @@ login_form.addEventListener('submit', async (e) => {
                 sessionStorage.setItem('fname', data["firstname"]);
                 sessionStorage.setItem('lname', data["lastname"]);
                 console.log(sessionStorage.getItem("id"));
-                location.href = "dashboard.html";
+                location.href = "View_bills.html";
             //}
         }
         catch(err){

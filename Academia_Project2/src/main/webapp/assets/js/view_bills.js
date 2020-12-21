@@ -1,5 +1,5 @@
 let get_pay = document.getElementById('view_bills');
-let get_totpay = document.getElementById('view_total');
+//let get_totpay = document.getElementById('view_total');
 
 get_pay.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -8,7 +8,7 @@ get_pay.addEventListener('submit', async (e) => {
     console.log(sessionStorage.getItem("id"));
     console.log("id ");
     console.log(document.getElementById('email').value);
-        let response = await fetch('api/students/getpayment', {
+        let response = await fetch('api/students/getduepayment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
