@@ -12,9 +12,9 @@
         <!-- DB schema will be updated if needed -->
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="show_sql">true</property>
-        <mapping class="com.example.academic.bean.Students"></mapping>
-        <mapping class="com.example.academic.bean.Bills"></mapping>
-        <mapping class="com.example.academic.bean.Student_Payment"></mapping>
+        <mapping class="com.example.academic.bean.Students"/>
+        <mapping class="com.example.academic.bean.Bills"/>
+        <mapping class="com.example.academic.bean.Student_Payment"/>
     </session-factory>
 
 </hibernate-configuration>

@@ -37,12 +37,14 @@ public class StudentsController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getstudentpayments(Students student) throws URISyntaxException {
         List<Student_Payment> result = studentsService.getStuPayment(student);
-
+       // for(Student_Payment student_payment: result){
+      //      System.out.println(student_payment.getDescription()+"---"+student_payment.getAmount());
+     //   }
         if(result == null)
         {
             return Response.noContent().build();
         }
-        System.out.println(result.size());
+      //  System.out.println(result.size());
         return Response.ok().entity(result).build();
     }
 
@@ -52,12 +54,10 @@ public class StudentsController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getstudenttotalpayments(Students student) throws URISyntaxException {
         List<table_out> result = studentsService.sumPayment(student);
-
         if(result == null)
         {
             return Response.noContent().build();
         }
-
         return Response.ok().entity(result).build();
     }
 

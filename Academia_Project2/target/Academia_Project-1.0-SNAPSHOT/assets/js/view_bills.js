@@ -1,4 +1,5 @@
 let get_pay = document.getElementById('view_bills');
+let get_totpay = document.getElementById('view_total');
 
 get_pay.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -13,7 +14,7 @@ get_pay.addEventListener('submit', async (e) => {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-                student_id : document.getElementById('email').value
+                id : sessionStorage.getItem("id")
             })
         });
         try {
